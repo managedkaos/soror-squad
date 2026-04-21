@@ -4,7 +4,6 @@
 import argparse
 import csv
 import io
-import sys
 
 NAME_COLUMN = "Please provide your name."
 PHONE_COLUMN = "Please provide your cell phone number."
@@ -76,9 +75,7 @@ def format_squad_report(squads):
         lines.append(
             f"  {name_hdr:<{w_name}}  {phone_hdr:<{w_phone}}  {email_hdr:<{w_email}}"
         )
-        lines.append(
-            f"  {'-' * w_name}  {'-' * w_phone}  {'-' * w_email}"
-        )
+        lines.append(f"  {'-' * w_name}  {'-' * w_phone}  {'-' * w_email}")
         for member, phone_out in zip(members, phones_fmt):
             lines.append(
                 f"  {member['name']:<{w_name}}  {phone_out:<{w_phone}}  "

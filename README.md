@@ -1,10 +1,46 @@
-# python-container-template
+# Soror Squad
 
-A template repo for container-ized Python applications.
+`soror-squad` reads a roster **CSV** (for example, survey export) and prints **per-squad contact reports**: each squad lists members with **name**, **phone** (US numbers formatted as `(NPA) NXX-XXXX` when possible), and **email**. Members appear **sorted by name** within each squad; squads are ordered alphabetically.
 
-## Development Setup
+The input file is expected to use the column headers from the original form (name, cell phone, email) and to put **squad membership in the last column**. That last column may contain **one or more squad names separated by commas**; a person listed in multiple squads appears under each squad.
 
-This template includes pre-commit hooks for code quality and security checks. To set up the development environment:
+## Usage
+
+### Local
+
+```bash
+python main.py path/to/roster.csv
+```
+
+**Aligned table** (default): fixed-width columns under each `Squad:` heading.
+
+**CSV-style blocks** (optional): each squad has a title line, then `Name,Phone,Email` rows; squads are separated by a blank line.
+
+```bash
+python main.py path/to/roster.csv --csv
+```
+
+### Docker
+
+Mount your input file into the container at `/work/input.csv` and pass `input.csv` as the argument (the process working directory is `/work`).
+
+```bash
+docker run -v input.csv:/work/input.csv ghcr.io/managedkaos/soror-squad:main input.csv
+```
+
+Use an absolute path on the host if the file is not in the current directory, for example:
+
+```bash
+docker run -v "$PWD/my-roster.csv:/work/input.csv" ghcr.io/managedkaos/soror-squad:main input.csv
+```
+
+CSV-style output:
+
+```bash
+docker run -v input.csv:/work/input.csv ghcr.io/managedkaos/soror-squad:main input.csv --csv
+```
+
+## Development setup
 
 1. Install development dependencies:
 
@@ -24,27 +60,15 @@ This template includes pre-commit hooks for code quality and security checks. To
    make pre-commit-run
    ```
 
-## Pre-commit Hooks
+### Pre-commit hooks
 
-The following hooks are configured to run automatically on commit:
+Hooks include Black, isort, flake8, bandit, detect-secrets, and common hygiene checks (merge conflicts, YAML/JSON, large files, whitespace, end-of-file).
 
-- **Black**: Code formatting with consistent style
-- **isort**: Import sorting and organization
-- **flake8**: Linting for code quality
-- **bandit**: Security vulnerability scanning
-- **detect-secrets**: Secret detection in code
-- **Various checks includings**:
-  - Merge conflict detection
-  - YAML/JSON validation
-  - Large file detection
-  - Trailing whitespace removal
-  - End-of-file fixes
+### Make targets
 
-## Available Make Targets
-
-- `make development-requirements` - Install development dependencies
-- `make pre-commit-install` - Install pre-commit hooks
-- `make pre-commit-run` - Run pre-commit on all files
-- `make pre-commit-clean` - Remove pre-commit hooks
-- `make lint` - Run linting tools manually
-- `make fmt` - Format code with black and isort
+- `make development-requirements` — install development dependencies
+- `make pre-commit-install` — install pre-commit hooks
+- `make pre-commit-run` — run pre-commit on all files
+- `make pre-commit-clean` — remove pre-commit hooks
+- `make lint` — run linting tools manually
+- `make fmt` — format with black and isort
