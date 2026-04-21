@@ -25,7 +25,7 @@ python main.py path/to/roster.csv --csv
 Mount your input file into the container at `/work/input.csv` and pass `input.csv` as the argument (the process working directory is `/work`).
 
 ```bash
-docker run -v input.csv:/work/input.csv ghcr.io/managedkaos/soror-squad:main input.csv
+docker run -v ./input.csv:/work/input.csv ghcr.io/managedkaos/soror-squad:main input.csv
 ```
 
 Use an absolute path on the host if the file is not in the current directory, for example:
@@ -37,7 +37,7 @@ docker run -v "$PWD/my-roster.csv:/work/input.csv" ghcr.io/managedkaos/soror-squ
 CSV-style output:
 
 ```bash
-docker run -v input.csv:/work/input.csv ghcr.io/managedkaos/soror-squad:main input.csv --csv
+docker run -v ./input.csv:/work/input.csv ghcr.io/managedkaos/soror-squad:main input.csv --csv
 ```
 
 ## Development setup
